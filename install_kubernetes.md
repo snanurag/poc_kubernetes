@@ -1,7 +1,7 @@
 # Installing Kubernetes on Ubuntu 18.04 LTS
 
 
-### Installing Kubeadm Kubelet and Kubectl
+### Installing Kubeadm Kubelet and Kubectl (On all VMs)
 
 `curl -s https://packages.cloud.google.com/apt/doc/apt-key.gpg | sudo apt-key add -`
 
@@ -12,7 +12,7 @@
 `sudo apt-get install -y kubelet kubeadm kubectl`
 
 
-### Starting a cluster
+### Starting a Master
 
 `sudo kubeadm init --pod-network-cidr=192.168.0.0/16`
 
@@ -23,8 +23,13 @@
 `sudo chown $(id -u):$(id -g) $HOME/.kube/config`
 
 
-### Applying RBAC and pod-network
+### Applying RBAC and pod-network to Master
 
 `kubectl apply -f https://docs.projectcalico.org/v3.3/getting-started/kubernetes/installation/hosted/rbac-kdd.yaml`
 
 `kubectl apply -f https://docs.projectcalico.org/v3.3/getting-started/kubernetes/installation/hosted/kubernetes-datastore/calico-networking/1.7/calico.yaml`
+
+
+### Adding a worker node to master
+
+`kubeadm join --token <token> <master-ip>:<master-port> --discovery-token-ca-cert-hash sha256:<hash>`
