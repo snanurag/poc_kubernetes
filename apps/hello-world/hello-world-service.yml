@@ -1,3 +1,4 @@
+# Need to map different pod ip:port with different service ports
 apiVersion: v1
 kind: Service
 metadata:
@@ -8,6 +9,11 @@ spec:
     greeting: hello
     department: world
   ports:
-  - protocol: TCP
+  - name : app1
+    protocol: TCP
     port: 80
     targetPort: 50000
+  - name : app2
+    protocol: TCP
+    port: 81
+    targetPort: 50001
