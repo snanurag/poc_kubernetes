@@ -1,4 +1,15 @@
-# Need to map different pod ip:port with different service ports
+# If pods has been created with multiple open ports then service needs one port per open port of pod.
+#
+# Started service is assigned a new IP from main ethernet subnet. 
+# So from local it can be accessed using that IP:port (here IP:80 or IP:81).
+#
+# From remote it can be accessed using that <ethernet_ip>:<node_port>. 
+# node_port is a new port assigned to the service, which is visible in kubectl get service. 
+# More details can be seen in kubectl describe service <svc-name>.
+#
+# Every service connects to the endpoints listed in its description. And, endpoints are the pod's ip:ports to connect to.
+# Pods get different ip from a new virtual interface (tun10) which spawns up on every kubernetes node.
+#
 apiVersion: v1
 kind: Service
 metadata:
