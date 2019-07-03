@@ -1,4 +1,5 @@
 # Installing Kubernetes on Ubuntu 18.04 LTS
+These instructions are taken from this page https://v1-14.docs.kubernetes.io/docs/setup/production-environment/tools/kubeadm/create-cluster-kubeadm/
 
 
 ### Installing Kubeadm Kubelet and Kubectl (On all VMs)
@@ -33,3 +34,9 @@
 ### Adding a worker node to master
 
 `kubeadm join --token <token> <master-ip>:<master-port> --discovery-token-ca-cert-hash sha256:<hash>`
+
+PS: If you miss to note the token then use following command to list tokens
+`kubeadm token list`
+
+PS: After 24 hrs tokens expired. Use following command to re-generate them.
+`kubeadm token create`
