@@ -33,7 +33,8 @@ These instructions are taken from this page https://v1-14.docs.kubernetes.io/doc
 
 ### Adding a worker node to master
 
-`kubeadm join --token <token> <master-ip>:<master-port> --discovery-token-ca-cert-hash sha256:<hash>`
+`sudo kubeadm join --token <token> <master-ip>:<master-port> --discovery-token-ca-cert-hash sha256:<hash>`
+e.g. `sudo kubeadm join 10.128.0.39:6443 --token bc2ezt.y3n703enfzjv681n --discovery-token-ca-cert-hash sha256:a4f7a3ce43cae1cccf2a442deb285aef0877c0e14a3c0ef913f0cdf5af0f7c8a`
 
 PS: If you miss to note the token then use following command to list tokens
 `kubeadm token list`
