@@ -1,9 +1,11 @@
-sudo -s 
+# Do sudo -s 
+# Installing docker
 yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo
 yum install -y docker-ce docker-ce-cli containerd.io
 systemctl start docker
 systemctl enable docker.service
 
+# Installing Kubernetes
 cat <<EOF > /etc/yum.repos.d/kubernetes.repo
 [kubernetes]
 name=Kubernetes
