@@ -1,4 +1,7 @@
-## It doesn't create L7 load balancer, which is the main use case of ingress.
+## LB service creates L4 lb. L4 lb transfers queries to ingress-nginx controller (POD), which directs on the basis of ingress resources. 
+## Ingress-nginx controller runs in synchronized loops and polls ingress resource all the time.
+## From internet https://L4-IP/ and https://L4-IP/kube will work.
+## From local nodes https://CLUSTERIP/ and https://CLUSTERIP/kube (with --insecure flag) will work. CLUSTERIP is of ingress-nginx controller service.
 kind: Service
 apiVersion: v1
 metadata:
@@ -28,7 +31,7 @@ metadata:
   labels:
     app: docker-hello-world
 spec:
-  replicas: 3
+  replicas: 1
   template:
     metadata:
       labels:
@@ -39,6 +42,27 @@ spec:
         image: scottsbaldwin/docker-hello-world:latest
         ports:
         - containerPort: 80
+---
+apiVersion: apps/v1beta1
+kind: Deployment
+metadata:
+  name: hello-kube-deployment
+  labels:
+    app: hello-kube-deployment
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: hello-kube-deployment
+    spec:
+      containers:
+      - name: hello-again
+        image: "gcr.io/google-samples/node-hello:1.0"
+        env:
+        - name: "PORT"
+          value: "8080"
+
 ---
 apiVersion: v1
 kind: Service
@@ -51,6 +75,20 @@ spec:
     - port: 8088
       targetPort: 80
   type: ClusterIP
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: hello-kubernetes
+spec:
+  type: ClusterIP
+  selector:
+    app: hello-kube-deployment
+  ports:
+  - protocol: TCP
+    port: 8080
+    targetPort: 8080
 ---
 apiVersion: extensions/v1beta1
 kind: Ingress
@@ -65,8 +103,8 @@ spec:
       - backend:
           serviceName: docker-hello-world-svc
           servicePort: 8088
-      - path: /my-path
+      - path: /kube
         backend:
-          serviceName: docker-hello-world-svc
-          servicePort: 8088
+          serviceName: hello-kubernetes
+          servicePort: 8080
       
