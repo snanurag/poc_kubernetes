@@ -5,7 +5,7 @@ metadata:
 spec:
   containers:
   - name: memory-demo-ctr
-    image: polinux/stress
+    image: snanurag/csp-skywalker-web:dev
     resources:
       limits:
         memory: "100Mi"
@@ -13,5 +13,3 @@ spec:
       requests:
         memory: "50Mi"
         cpu: "100m"
-    command: ["stress"]
-    args: ["--vm", "1", "--vm-bytes", "150M", "--vm-hang", "1"]
