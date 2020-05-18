@@ -1,4 +1,5 @@
 # Copied from https://raw.githubusercontent.com/kubernetes/ingress-nginx/master/deploy/static/mandatory.yaml
+# Update New version is https://raw.githubusercontent.com/kubernetes/ingress-nginx/controller-0.32.0/deploy/static/provider/cloud/deploy.yaml
 apiVersion: v1
 kind: Namespace
 metadata:
